@@ -7,14 +7,21 @@ public class TruffleHelper {
 		for (Cell[] cell : gameBoard) {
 			
 			for (Cell insideCell : cell) {
-				
+
 				if (insideCell.isMine()) {
 					System.out.print("*");
-				} else if (!insideCell.isMine()) {
+//				} else if (!insideCell.isMine()) {
+//					System.out.print(insideCell.getNumAdjMines());
+//				}
+				}
+				else if (insideCell.isCovered()) {
+					System.out.print("X");
+				}
+				else if (!insideCell.isCovered()) {
 					System.out.print(insideCell.getNumAdjMines());
 				}
-			}
-			
+				}
+
 			System.out.println();
 		}
 	}
@@ -40,6 +47,7 @@ public class TruffleHelper {
 		}
 		
 		//set the adj truff values
+		//set in a trycatch
 		int adjTruffle = 0;
 		for (int x = 0; x < rows; x++) {
 			for (int y = 0; y < cols; y++) {
@@ -176,10 +184,6 @@ public class TruffleHelper {
 				}
 						
 						
-						
-
-
-						
 				
 				gameBoard[x][y].setNumAdjMines(adjTruffle);
 				
@@ -191,13 +195,113 @@ public class TruffleHelper {
 		return gameBoard;
 	}
 	
-	public static int randInt(int max) {
+	
+	public static Cell[][] gameBoardUncover(){
+		
+	};
+	
+	public static void uncoverOneSquare(Cell [] [] gameBoard, int inputX, int inputY) {
+		
+		Cell currentCell = new Cell(); 
+	
+		inputX -= 1;
+		inputY -= 1;
+		
+		currentCell = gameBoard[inputX][inputY];
 
-	    int rand = new Random().nextInt(max);
-	    return rand;
-	    
+		
+		if(currentCell.isMine()) {
+			System.out.println("is mine. game over");
+			//temp game over message
+		} else if (!currentCell.isCovered()) {
+			System.out.println("Try another.");
+		}else if (currentCell.getNumAdjMines() == 0) {
+			currentCell.setCovered(false);
+			openAllAdjacentCells (gameBoard, inputX, inputY);
+		}
+		else if (currentCell.getNumAdjMines() > 0) {
+			gameBoard[inputX][inputY].setCovered(false);
+		}
+	};
+
+	public static void openAllAdjacentCells (Cell [] [] gameBoard, int inputX, int inputY) {
+
+//
+//		try {
+//			gameBoard[inputX][inputY].setCovered(false);
+//        
+//		}
+//		catch(Exception e) {
+		//}
+		
+		//inputX -= 1;
+		//inputY -= 1;
+		
+		try {
+			gameBoard[inputX -1][inputY -1].setCovered(false);
+			    
+			}
+		catch(Exception e) {
+			}
+		try {
+			gameBoard[inputX-1][inputY].setCovered(false);
+			    
+			}
+		catch(Exception e) {
+			}
+		try {
+			gameBoard[inputX-1][inputY+1].setCovered(false);
+			    
+			}
+		catch(Exception e) {
+			}
+		try {
+			gameBoard[inputX][inputY-1].setCovered(false);
+			    
+			}
+		catch(Exception e) {
+			}
+		try {
+			gameBoard[inputX][inputY+1].setCovered(false);
+			    
+			}
+		catch(Exception e) {
+			}
+		try {
+			gameBoard[inputX+1][inputY-1].setCovered(false);
+			    
+			}
+		catch(Exception e) {
+			}
+		try {
+			gameBoard[inputX+1][inputY].setCovered(false);
+			    
+			}
+		catch(Exception e) {
+			}
+		try {
+			gameBoard[inputX+1][inputY+1].setCovered(false);
+			    
+			}
+		catch(Exception e) {
+			}
 	}
 	
+	
+	
+	//method checkForZeros	
+	//method openAllAdjacentCells
+	//method setFlag
+	//method gameOver
+
+
+	public static int randInt(int max) {
+
+		int rand = new Random().nextInt(max);
+		return rand;
+
+	}
+
 	
 
 }
