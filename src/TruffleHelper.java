@@ -3,6 +3,8 @@ import java.util.Random;
 public class TruffleHelper {
 	
 	public static void printGameBoard(Cell[][] gameBoard) {
+		
+		checkForZeros(gameBoard);
 
 		for (Cell[] cell : gameBoard) {
 			
@@ -28,7 +30,7 @@ public class TruffleHelper {
 	
 	public static Cell[][] gameBoardBuilder(int cols, int rows, int numTuffles) {
 		
-		Cell[][] gameBoard = new Cell[cols][rows];
+		Cell[][] gameBoard = new Cell[rows][cols];
 		
 		for (int i = 0; i < rows; i++) {
 			
@@ -182,9 +184,7 @@ public class TruffleHelper {
 						adjTruffle +=1;
 					}
 				}
-						
-						
-				
+
 				gameBoard[x][y].setNumAdjMines(adjTruffle);
 				
 				
@@ -196,10 +196,6 @@ public class TruffleHelper {
 	}
 	
 	
-	public static Cell[][] gameBoardUncover(){
-		
-	};
-	
 	public static void uncoverOneSquare(Cell [] [] gameBoard, int inputX, int inputY) {
 		
 		Cell currentCell = new Cell(); 
@@ -208,7 +204,6 @@ public class TruffleHelper {
 		inputY -= 1;
 		
 		currentCell = gameBoard[inputX][inputY];
-
 		
 		if(currentCell.isMine()) {
 			System.out.println("is mine. game over");
@@ -222,75 +217,66 @@ public class TruffleHelper {
 		else if (currentCell.getNumAdjMines() > 0) {
 			gameBoard[inputX][inputY].setCovered(false);
 		}
-	};
+	}
 
 	public static void openAllAdjacentCells (Cell [] [] gameBoard, int inputX, int inputY) {
 
-//
-//		try {
-//			gameBoard[inputX][inputY].setCovered(false);
-//        
-//		}
-//		catch(Exception e) {
-		//}
-		
-		//inputX -= 1;
-		//inputY -= 1;
-		
 		try {
 			gameBoard[inputX -1][inputY -1].setCovered(false);
-			    
-			}
-		catch(Exception e) {
-			}
+		} catch(Exception e) { }
+		
 		try {
 			gameBoard[inputX-1][inputY].setCovered(false);
-			    
-			}
-		catch(Exception e) {
-			}
+		} catch(Exception e) { }
+		
 		try {
 			gameBoard[inputX-1][inputY+1].setCovered(false);
-			    
-			}
-		catch(Exception e) {
-			}
+		} catch(Exception e) { }
+		
 		try {
 			gameBoard[inputX][inputY-1].setCovered(false);
-			    
-			}
-		catch(Exception e) {
-			}
+		} catch(Exception e) { }
+		
 		try {
 			gameBoard[inputX][inputY+1].setCovered(false);
-			    
-			}
-		catch(Exception e) {
-			}
+		} catch(Exception e) { }
+		
 		try {
 			gameBoard[inputX+1][inputY-1].setCovered(false);
-			    
-			}
-		catch(Exception e) {
-			}
+		} catch(Exception e) { }
+		
 		try {
 			gameBoard[inputX+1][inputY].setCovered(false);
-			    
-			}
-		catch(Exception e) {
-			}
+		} catch(Exception e) { }
+		
 		try {
 			gameBoard[inputX+1][inputY+1].setCovered(false);
-			    
-			}
-		catch(Exception e) {
-			}
+		} catch(Exception e) { }
+		
 	}
 	
 	
 	
 	//method checkForZeros	
-	//method openAllAdjacentCells
+	public static void checkForZeros (Cell[][] gameBoard) {
+		
+		for (int i = 0 ; i < gameBoard.length ; i++) {
+			Cell[] col = gameBoard[i];
+			
+			for (int k = 0 ; k < col.length ; k++) {
+				Cell c = gameBoard[i][k];
+				
+				if (!c.isCovered() && c.getNumAdjMines() == 0) {
+					openAllAdjacentCells(gameBoard, i, k);
+				}
+			}
+		}
+		
+		
+	}
+	
+	
+	
 	//method setFlag
 	//method gameOver
 

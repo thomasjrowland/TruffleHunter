@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class TruffleHunterApp {
 
 	public static void main(String[] args) {
+
         Scanner scnr = new Scanner(System.in);
        
 		Cell[][] gameBoard =  TruffleHelper.gameBoardBuilder(5, 5, 2);
@@ -12,8 +13,7 @@ public class TruffleHunterApp {
 		do{
 		
 		TruffleHelper.printGameBoard(gameBoard);
-		
-		
+				
 		System.out.print("Enter the input for row.");
 		int inputRow = scnr.nextInt();
 		
@@ -22,6 +22,8 @@ public class TruffleHunterApp {
 		
 		TruffleHelper.uncoverOneSquare(gameBoard,inputRow, inputCol);
 		} while(true);
+
+
 	}
 
 }
