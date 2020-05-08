@@ -1,23 +1,31 @@
 
+/*
+ * Cell object class.
+ *  
+ * Cells are stored in a 2D array to create a dynamic
+ * randomly generated game board that changes each
+ * play-through.
+ * 
+ */
+
 public class Cell {
 	
 	private boolean isCovered = true;
 	private boolean isMine = false;
 	private boolean hasFlag = false;
 	private int numAdjMines = 0;
-	private int numAdjZeros = 0;
-	
 	
 	public Cell() {}
 	
-	public Cell(boolean isCovered, boolean isMine, boolean hasFlag, int numAdjMines, int numAdjZeros) {
+	public Cell(boolean isCovered, boolean isMine, boolean hasFlag, int numAdjMines) {
 		this.isCovered = isCovered;
 		this.isMine = isMine;
 		this.hasFlag = hasFlag;
 		this.numAdjMines = numAdjMines;
-		this.numAdjZeros = numAdjZeros;
 	}
 
+	//GETTERS AND SETTERS:
+	
 	public boolean isCovered() {
 		return isCovered;
 	}
@@ -55,18 +63,4 @@ public class Cell {
 		return "Cell [isCovered=" + isCovered + ", isMine=" + isMine + ", hasFlag=" + hasFlag + ", numAdjMines="
 				+ numAdjMines + "]";
 	}
-
-	public int getNumAdjZeros() {
-		return numAdjZeros;
-	}
-
-	public void setNumAdjZeros(int numAdjZeros) {
-		this.numAdjZeros = numAdjZeros;
-	}
-	
-	
-	
-	
-	
-
 }

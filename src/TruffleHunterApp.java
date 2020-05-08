@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Scanner;
 
 
@@ -20,25 +19,29 @@ public class TruffleHunterApp {
 		int flagOrExplore = scnr.nextInt();
 		
 			switch (flagOrExplore) {
+				
 				case 1:
 					System.out.print("Enter the input for row.");
 					inputRow = scnr.nextInt();
 					System.out.print("Enter the input for col.");
 					inputCol = scnr.nextInt();
-					
 					TruffleHelper.setFlag(gameBoard, inputRow-1, inputCol-1);
 					break;
+				
 				case 2: 
 					System.out.print("Enter the input for row.");
 					inputRow = scnr.nextInt();
 					System.out.print("Enter the input for col.");
 					inputCol = scnr.nextInt();
-					
 					TruffleHelper.uncoverOneSquare(gameBoard,inputRow-1, inputCol-1);
 					break;
+					
 			}
+			
 		}  while(true);
+		
 	}
+	
 }
 
 
