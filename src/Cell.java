@@ -5,15 +5,17 @@ public class Cell {
 	private boolean isMine = false;
 	private boolean hasFlag = false;
 	private int numAdjMines = 0;
+	private int numAdjZeros = 0;
 	
 	
 	public Cell() {}
 	
-	public Cell(boolean isCovered, boolean isMine, boolean hasFlag, int numAdjMines) {
+	public Cell(boolean isCovered, boolean isMine, boolean hasFlag, int numAdjMines, int numAdjZeros) {
 		this.isCovered = isCovered;
 		this.isMine = isMine;
 		this.hasFlag = hasFlag;
 		this.numAdjMines = numAdjMines;
+		this.numAdjZeros = numAdjZeros;
 	}
 
 	public boolean isCovered() {
@@ -52,6 +54,14 @@ public class Cell {
 	public String toString() {
 		return "Cell [isCovered=" + isCovered + ", isMine=" + isMine + ", hasFlag=" + hasFlag + ", numAdjMines="
 				+ numAdjMines + "]";
+	}
+
+	public int getNumAdjZeros() {
+		return numAdjZeros;
+	}
+
+	public void setNumAdjZeros(int numAdjZeros) {
+		this.numAdjZeros = numAdjZeros;
 	}
 	
 	

@@ -4,24 +4,28 @@ public class TruffleHelper {
 	
 	public static void printGameBoard(Cell[][] gameBoard) {
 		
-		checkForZeros(gameBoard);
-
+		//checkForZeros(gameBoard);
+		
+		
 		for (Cell[] cell : gameBoard) {
 			
 			for (Cell insideCell : cell) {
 
 				if (insideCell.isMine()) {
 					System.out.print("*");
-//				} else if (!insideCell.isMine()) {
-//					System.out.print(insideCell.getNumAdjMines());
-//				}
-				}
-				else if (insideCell.isCovered()) {
+				} else if (insideCell.isHasFlag()) {
+					System.out.print("F");
+				} else if (insideCell.isCovered()) {
 					System.out.print("X");
-				}
-				else if (!insideCell.isCovered()) {
+				} else if (!insideCell.isCovered()) {
 					System.out.print(insideCell.getNumAdjMines());
-				}
+				} 
+				
+//				else if (!insideCell.isMine()) {
+//					System.out.print(insideCell.getNumAdjMines());
+//				
+//				}
+				
 				}
 
 			System.out.println();
@@ -35,7 +39,7 @@ public class TruffleHelper {
 		for (int i = 0; i < rows; i++) {
 			
 			for (int j = 0; j < cols; j++) {
-				gameBoard[i][j] = new Cell(true, false, false, 0);
+				gameBoard[i][j] = new Cell(true, false, false, 0, 0);
 			}
 		}
 		
@@ -187,30 +191,34 @@ public class TruffleHelper {
 
 				gameBoard[x][y].setNumAdjMines(adjTruffle);
 				
-				
-				
 			}
 		}
+		return gameBoard;		
+		}
 		
-		return gameBoard;
+		
+		
+	public static void setFlag(Cell[][] gameBoard, int x, int y) {
+		
+		if (!gameBoard[x][y].isHasFlag()) {
+			gameBoard[x][y].setHasFlag(true);
+		}else {
+			gameBoard[x][y].setHasFlag(false);
+		}
 	}
+	
 	
 	
 	public static void uncoverOneSquare(Cell [] [] gameBoard, int inputX, int inputY) {
 		
 		Cell currentCell = new Cell(); 
 	
-		inputX -= 1;
-		inputY -= 1;
+		//inputX -= 1;
+		//inputY -= 1;
 		
 		currentCell = gameBoard[inputX][inputY];
 		
-		if(currentCell.isMine()) {
-			System.out.println("is mine. game over");
-			//temp game over message
-		} else if (!currentCell.isCovered()) {
-			System.out.println("Try another.");
-		}else if (currentCell.getNumAdjMines() == 0) {
+		if (currentCell.getNumAdjMines() == 0 && currentCell.isCovered()) {
 			currentCell.setCovered(false);
 			openAllAdjacentCells (gameBoard, inputX, inputY);
 		}
@@ -219,66 +227,132 @@ public class TruffleHelper {
 		}
 	}
 
-	public static void openAllAdjacentCells (Cell [] [] gameBoard, int inputX, int inputY) {
+	public static void openAllAdjacentCells (Cell [] [] gameBoard, int x, int y) {
 
 		try {
-			gameBoard[inputX -1][inputY -1].setCovered(false);
+			uncoverOneSquare(gameBoard, x -1, y -1);
 		} catch(Exception e) { }
 		
 		try {
-			gameBoard[inputX-1][inputY].setCovered(false);
+			uncoverOneSquare(gameBoard,x-1, y);
 		} catch(Exception e) { }
 		
 		try {
-			gameBoard[inputX-1][inputY+1].setCovered(false);
+			uncoverOneSquare(gameBoard,x-1, y+1);
 		} catch(Exception e) { }
 		
 		try {
-			gameBoard[inputX][inputY-1].setCovered(false);
+			uncoverOneSquare(gameBoard,x, y-1);
 		} catch(Exception e) { }
 		
 		try {
-			gameBoard[inputX][inputY+1].setCovered(false);
+			uncoverOneSquare(gameBoard,x, y+1);
 		} catch(Exception e) { }
 		
 		try {
-			gameBoard[inputX+1][inputY-1].setCovered(false);
+			uncoverOneSquare(gameBoard,x+1, y-1);
 		} catch(Exception e) { }
 		
 		try {
-			gameBoard[inputX+1][inputY].setCovered(false);
+			uncoverOneSquare(gameBoard,x+1, y);
 		} catch(Exception e) { }
 		
 		try {
-			gameBoard[inputX+1][inputY+1].setCovered(false);
+			uncoverOneSquare(gameBoard,x+1, y+1);
 		} catch(Exception e) { }
 		
 	}
 	
 	
 	
-	//method checkForZeros	
-	public static void checkForZeros (Cell[][] gameBoard) {
-		
-		for (int i = 0 ; i < gameBoard.length ; i++) {
-			Cell[] col = gameBoard[i];
-			
-			for (int k = 0 ; k < col.length ; k++) {
-				Cell c = gameBoard[i][k];
-				
-				if (!c.isCovered() && c.getNumAdjMines() == 0) {
-					openAllAdjacentCells(gameBoard, i, k);
-				}
-			}
-		}
-		
-		
-	}
-	
-	
-	
-	//method setFlag
-	//method gameOver
+//	//method checkForZeros	
+//	public static void checkForZeros (Cell[][] gameBoard) {
+//		
+//		int numZeros = 0;
+//		
+//		
+//		
+//			for (int i = 0 ; i < gameBoard.length ; i++) {
+//				Cell[] col = gameBoard[i];
+//			
+//				for (int k = 0 ; k < col.length ; k++) {
+//					Cell c = gameBoard[i][k];
+//				
+//					if (!c.isCovered() && c.getNumAdjMines() == 0) {
+//						openAllAdjacentCells(gameBoard, i, k);
+//						numZeros = countAdjZeros(gameBoard, i, k);
+//					}
+//				}
+//			}
+//			if (numZeros > 0) {
+//				//checkForZeros(gameBoard);
+//			}
+//			
+//			System.out.println(numZeros);
+//		
+//		
+//		
+//	}
+//	
+//	//method count adj zeros
+//	public static int countAdjZeros(Cell[][] gameBoard, int x, int y) {
+//		
+//		int numZeros = 0;
+//		
+//		try {
+//			if (gameBoard[x-1][y-1].getNumAdjMines()==0) {
+//				numZeros +=1;
+//			} 
+//		} catch(Exception e) { }
+//		
+//		try {
+//			if (gameBoard[x-1][y].getNumAdjMines()==0) {
+//				numZeros +=1;
+//			}
+//		} catch(Exception e) { }
+//		
+//		try {
+//			if (gameBoard[x-1][y+1].getNumAdjMines()==0) {
+//				numZeros +=1;
+//			}
+//		} catch(Exception e) { }
+//		
+//		try {
+//			if (gameBoard[x][y-1].getNumAdjMines()==0) {
+//				numZeros +=1;
+//			}
+//		} catch(Exception e) { }
+//		
+//		try {
+//			if (gameBoard[x][y+1].getNumAdjMines()==0) {
+//				numZeros +=1;
+//			}
+//		} catch(Exception e) { }
+//		
+//		try {
+//			if (gameBoard[x+1][y-1].getNumAdjMines()==0) {
+//				numZeros +=1;
+//			}
+//		} catch(Exception e) { }
+//		
+//		try {
+//			if (gameBoard[x+1][y].getNumAdjMines()==0) {
+//				numZeros +=1;
+//			}
+//		} catch(Exception e) { }
+//		
+//		try {
+//			if (gameBoard[x+1][y+1].getNumAdjMines()==0) {
+//				numZeros +=1;
+//			}
+//		} catch(Exception e) { }
+//		
+//		return numZeros;
+//		
+//	}
+//	
+//	//method setFlag
+//	//method gameOver
 
 
 	public static int randInt(int max) {
