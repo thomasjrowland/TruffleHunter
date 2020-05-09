@@ -9,25 +9,51 @@ public class TruffleHelper {
 	 * 
 	 */
 	
-	public static void printGameBoard(Cell[][] gameBoard) {
+	public static void printGameBoard(Cell[][] gameBoard, int remainingTruffles, int rows, int cols) {
+		
+		int displayRowNum = 1;
+		
+		System.out.println("REMAINING TRUFFLES: " + remainingTruffles);
+		System.out.print("    ");
+		
+		for (int i = 1; i <= cols; i++) {
+			System.out.printf("%3d", i);
+		}
+		
+		System.out.println();
+		
+		System.out.print("     ");
+		
+		for (int i = 1; i <= cols; i++) {
+			System.out.print("___");
+		}
+		
+		System.out.println();
 		
 		for (Cell[] cell : gameBoard) {
+			
+			System.out.printf("%3d |", displayRowNum);
+			displayRowNum++;
 			
 			for (Cell insideCell : cell) {
 
 				if (insideCell.isHasFlag()) {
-					System.out.print("F");
-				} else if (insideCell.isMine()) {
-					System.out.print("X");
+					System.out.print("[¶]");
+				//} else if (insideCell.isMine()) {
+				//	System.out.print(" ֍ ");
 				} else if (insideCell.isCovered()) {
-					System.out.print("X");
+					System.out.print("[_]");
+				} else if (!insideCell.isCovered() && insideCell.getNumAdjTruffles() == 0) {
+					System.out.print(":::");
 				} else if (!insideCell.isCovered()) {
-					System.out.print(insideCell.getNumAdjMines());
+					System.out.print(":" + insideCell.getNumAdjTruffles() + ":");
 				} 
 			}
 
 			System.out.println();
 		}
+		
+		System.out.println();
 	}
 	
 	/* gameBoardBuilder(int cols, int rows, int numTuffles)
@@ -63,12 +89,20 @@ public class TruffleHelper {
 		 */
 		int remainingTruffles = numTuffles;
 		
-		while (remainingTruffles != 0) {
-			if (!gameBoard[randInt(rows)][randInt(cols)].isMine()) {
-				gameBoard[randInt(rows)][randInt(cols)].setMine(true);
+		while (remainingTruffles > 0) {
+			
+			int x = 0;
+			int y = 0;
+			
+			x = randInt(rows);
+			y = randInt(cols);
+			
+			if (!gameBoard[x][y].isTruffle()) {
+				gameBoard[x][y].setTruffle(true);
 				remainingTruffles -= 1;
 			}
-		}
+			
+		} 
 		
 		/*
 		 * Scans through each cell on the board and then looks through
@@ -85,55 +119,55 @@ public class TruffleHelper {
 					adjTruffle = 0;
 
 					try {
-						if (gameBoard[x-1][y-1].isMine()) {
+						if (gameBoard[x-1][y-1].isTruffle()) {
 							adjTruffle +=1;
 						}
 					} catch (Exception e) {}
 					
 					try {
-						if (gameBoard[x-1][y].isMine()) {
+						if (gameBoard[x-1][y].isTruffle()) {
 							adjTruffle +=1;
 						}						
 					} catch (Exception e) {}
 				
 					try {					 
-						if (gameBoard[x-1][y+1].isMine()) {
+						if (gameBoard[x-1][y+1].isTruffle()) {
 							adjTruffle +=1;
 						}
 					} catch (Exception e) {}
 					
 					try {
 						
-						if (gameBoard[x][y-1].isMine()) {
+						if (gameBoard[x][y-1].isTruffle()) {
 							adjTruffle +=1;
 						}
 					} catch (Exception e) {}
 					
 					try {
-						if (gameBoard[x][y+1].isMine()) {
+						if (gameBoard[x][y+1].isTruffle()) {
 							adjTruffle +=1;
 						}
 					} catch (Exception e) {}
 					
 					try {
-						if (gameBoard[x+1][y-1].isMine()) {
+						if (gameBoard[x+1][y-1].isTruffle()) {
 							adjTruffle +=1;
 						}
 					} catch (Exception e) {}
 					
 					try {
-						if (gameBoard[x+1][y].isMine()) {
+						if (gameBoard[x+1][y].isTruffle()) {
 							adjTruffle +=1;
 						}
 					} catch (Exception e) {}
 					
 					try {
-						if (gameBoard[x+1][y+1].isMine()) {
+						if (gameBoard[x+1][y+1].isTruffle()) {
 							adjTruffle +=1;
 						}
 					} catch (Exception e) {}
 				
-					gameBoard[x][y].setNumAdjMines(adjTruffle);
+					gameBoard[x][y].setNumAdjTruffles(adjTruffle);
 				}
 			}
 		return gameBoard;		
@@ -148,15 +182,19 @@ public class TruffleHelper {
 	 * One of the two options the user has. 
 	 */
 		
-	public static void setFlag(Cell[][] gameBoard, int x, int y) {
+	public static int setFlag(Cell[][] gameBoard, int x, int y, int remainingTruffles) {
 		
-		if (gameBoard[x][y].isCovered()) {
-			System.out.println("Already uncovered.  Cannot put flag!");
-		} else if (!gameBoard[x][y].isHasFlag()) {
+		int truffleCounter = remainingTruffles;
+		
+		if (!gameBoard[x][y].isHasFlag()) {
 			gameBoard[x][y].setHasFlag(true);
+			truffleCounter -= 1;
 		}else {
 			gameBoard[x][y].setHasFlag(false);
+			truffleCounter +=1;
 		}
+		
+		return truffleCounter;
 	}
 	
 	/* uncoverOneSquare(Cell [] [] gameBoard, int inputX, int inputY) {
@@ -169,20 +207,23 @@ public class TruffleHelper {
 	 * truffles in that cell the next time the board is printed. 
 	 */
 	
-	public static void uncoverOneSquare(Cell [] [] gameBoard, int inputX, int inputY) {
+	public static int uncoverOneSquare(Cell [][] gameBoard, int x, int y, int remainingTruffles, int cols) {
 		
+		int truffleCounter = remainingTruffles;
 		Cell currentCell = new Cell(); 
 	
-		currentCell = gameBoard[inputX][inputY];
+		currentCell = gameBoard[x][y];
 		
-		if (currentCell.isMine()) {
-			gameOver();			
-		} else if (currentCell.getNumAdjMines() == 0 && currentCell.isCovered()) {
+		if (currentCell.isTruffle()) {
+			truffleCounter = gameOver(gameBoard, truffleCounter, cols);			
+		} else if (currentCell.getNumAdjTruffles() == 0 && currentCell.isCovered()) {
 			currentCell.setCovered(false);
-			openAllAdjacentCells (gameBoard, inputX, inputY);
-		} else if (currentCell.getNumAdjMines() > 0) {
-			gameBoard[inputX][inputY].setCovered(false);
+			openAllAdjacentCells (gameBoard, x, y, cols);
+		} else if (currentCell.getNumAdjTruffles() > 0) {
+			gameBoard[x][y].setCovered(false);
 		}
+		
+		return truffleCounter;
 	}
 	
 	/* openAllAdjacentCells (Cell [] [] gameBoard, int x, int y)
@@ -199,38 +240,38 @@ public class TruffleHelper {
 	 * 
 	 */
 
-	public static void openAllAdjacentCells (Cell [] [] gameBoard, int x, int y) {
+	public static void openAllAdjacentCells (Cell [][] gameBoard, int x, int y, int cols) {
 
 		try {
-			uncoverOneSquare(gameBoard, x -1, y -1);
+			uncoverOneSquare(gameBoard, x -1, y -1, 1, 1);
 		} catch(Exception e) { }
 		
 		try {
-			uncoverOneSquare(gameBoard,x-1, y);
+			uncoverOneSquare(gameBoard,x-1, y, 1, 1);
 		} catch(Exception e) { }
 		
 		try {
-			uncoverOneSquare(gameBoard,x-1, y+1);
+			uncoverOneSquare(gameBoard,x-1, y+1, 1, 1);
 		} catch(Exception e) { }
 		
 		try {
-			uncoverOneSquare(gameBoard,x, y-1);
+			uncoverOneSquare(gameBoard,x, y-1, 1, 1);
 		} catch(Exception e) { }
 		
 		try {
-			uncoverOneSquare(gameBoard,x, y+1);
+			uncoverOneSquare(gameBoard,x, y+1, 1, 1);
 		} catch(Exception e) { }
 		
 		try {
-			uncoverOneSquare(gameBoard,x+1, y-1);
+			uncoverOneSquare(gameBoard,x+1, y-1, 1, 1);
 		} catch(Exception e) { }
 		
 		try {
-			uncoverOneSquare(gameBoard,x+1, y);
+			uncoverOneSquare(gameBoard,x+1, y, 1, 1);
 		} catch(Exception e) { }
 		
 		try {
-			uncoverOneSquare(gameBoard,x+1, y+1);
+			uncoverOneSquare(gameBoard,x+1, y+1, 1, 1);
 		} catch(Exception e) { }
 		
 	}
@@ -241,9 +282,53 @@ public class TruffleHelper {
 	 * 
 	 */
 	
-	public static void gameOver() {
+	public static int gameOver(Cell [][] gameBoard, int remainingTruffles, int cols) {
 		
-		System.out.println("GAME OVER!");
+		int displayRowNum = 1;
+		
+		System.out.println("REMAINING TRUFFLES: " + remainingTruffles);
+		System.out.print("    ");
+		
+		for (int i = 1; i <= cols; i++) {
+			System.out.printf("%3d", i);
+		}
+		
+		System.out.println();
+		
+		System.out.print("     ");
+		
+		for (int i = 1; i <= cols; i++) {
+			System.out.print("___");
+		}
+		
+		System.out.println();
+		
+		for (Cell[] cell : gameBoard) {
+			
+			System.out.printf("%3d |", displayRowNum);
+			displayRowNum++;
+			
+			for (Cell insideCell : cell) {
+
+				if (insideCell.isHasFlag() && !insideCell.isTruffle()) {
+					System.out.print("[X]");
+				} else if (insideCell.isTruffle()) {
+					System.out.print(" ֍ ");
+				} else if (insideCell.isCovered()) {
+					System.out.print("[_]");
+				} else if (!insideCell.isCovered() && insideCell.getNumAdjTruffles() == 0) {
+					System.out.print(":::");
+				} else if (!insideCell.isCovered()) {
+					System.out.print(":" + insideCell.getNumAdjTruffles() + ":");
+				} 
+			}
+
+			System.out.println();
+		}
+		
+		System.out.println("YOU LOSE!");
+		return 0;
+		
 	}
 	
 	/* randInt(int max)

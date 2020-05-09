@@ -11,17 +11,17 @@
 public class Cell {
 	
 	private boolean isCovered = true;
-	private boolean isMine = false;
+	private boolean isTruffle = false;
 	private boolean hasFlag = false;
-	private int numAdjMines = 0;
+	private int numAdjTruffles = 0;
 	
 	public Cell() {}
 	
-	public Cell(boolean isCovered, boolean isMine, boolean hasFlag, int numAdjMines) {
+	public Cell(boolean isCovered, boolean isTruffle, boolean hasFlag, int numAdjMines) {
 		this.isCovered = isCovered;
-		this.isMine = isMine;
+		this.isTruffle = isTruffle;
 		this.hasFlag = hasFlag;
-		this.numAdjMines = numAdjMines;
+		this.numAdjTruffles = numAdjMines;
 	}
 
 	//GETTERS AND SETTERS:
@@ -34,12 +34,12 @@ public class Cell {
 		this.isCovered = isCovered;
 	}
 
-	public boolean isMine() {
-		return isMine;
+	public boolean isTruffle() {
+		return isTruffle;
 	}
 
-	public void setMine(boolean isMine) {
-		this.isMine = isMine;
+	public void setTruffle(boolean isTruffle) {
+		this.isTruffle = isTruffle;
 	}
 
 	public boolean isHasFlag() {
@@ -50,17 +50,17 @@ public class Cell {
 		this.hasFlag = hasFlag;
 	}
 
-	public int getNumAdjMines() {
-		return numAdjMines;
+	public int getNumAdjTruffles() {
+		return numAdjTruffles;
 	}
 
-	public void setNumAdjMines(int numAdjMines) {
-		this.numAdjMines = numAdjMines;
+	public void setNumAdjTruffles(int numAdjTruffles) {
+		this.numAdjTruffles = numAdjTruffles;
 	}
 
 	@Override
 	public String toString() {
-		return "Cell [isCovered=" + isCovered + ", isMine=" + isMine + ", hasFlag=" + hasFlag + ", numAdjMines="
-				+ numAdjMines + "]";
+		return "Cell [isCovered=" + isCovered + ", isTruffle=" + isTruffle + ", hasFlag=" + hasFlag + ", numAdjTruffles="
+				+ numAdjTruffles + "]";
 	}
 }
