@@ -186,12 +186,16 @@ public class TruffleHelper {
 		
 		int truffleCounter = remainingTruffles;
 		
-		if (!gameBoard[x][y].isHasFlag()) {
+		if (!gameBoard[x][y].isHasFlag() && gameBoard[x][y].isTruffle()) {
 			gameBoard[x][y].setHasFlag(true);
 			truffleCounter -= 1;
-		}else {
+		}else if (!gameBoard[x][y].isHasFlag() && !gameBoard[x][y].isTruffle()) {
+			gameBoard[x][y].setHasFlag(true);
+		} else if (gameBoard[x][y].isHasFlag() && gameBoard[x][y].isTruffle()) {
 			gameBoard[x][y].setHasFlag(false);
-			truffleCounter +=1;
+			truffleCounter += 1;			
+		} else if (gameBoard[x][y].isHasFlag() && !gameBoard[x][y].isTruffle()) {
+			gameBoard[x][y].setHasFlag(false);
 		}
 		
 		return truffleCounter;
