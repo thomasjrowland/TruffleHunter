@@ -38,6 +38,7 @@ public class TruffleHelper {
 			for (Cell insideCell : cell) {
 
 				if (insideCell.isHasFlag()) {
+					insideCell.setCovered(true);
 					System.out.print("[P]");
 				//} else if (insideCell.isMine()) {
 				//	System.out.print(" Ö� ");
