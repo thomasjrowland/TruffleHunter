@@ -317,7 +317,7 @@ public class TruffleHelper {
 				if (insideCell.isHasFlag() && !insideCell.isTruffle()) {
 					System.out.print("[X]");
 				} else if (insideCell.isTruffle()) {
-					System.out.print(" Ö� ");
+					System.out.print(" * ");
 				} else if (insideCell.isCovered()) {
 					System.out.print("[_]");
 				} else if (!insideCell.isCovered() && insideCell.getNumAdjTruffles() == 0) {
