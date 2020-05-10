@@ -38,9 +38,9 @@ public class TruffleHelper {
 			for (Cell insideCell : cell) {
 
 				if (insideCell.isHasFlag()) {
-					System.out.print("[¶]");
+					System.out.print("[P]");
 				//} else if (insideCell.isMine()) {
-				//	System.out.print(" ֍ ");
+				//	System.out.print(" Ö� ");
 				} else if (insideCell.isCovered()) {
 					System.out.print("[_]");
 				} else if (!insideCell.isCovered() && insideCell.getNumAdjTruffles() == 0) {
@@ -317,7 +317,7 @@ public class TruffleHelper {
 				if (insideCell.isHasFlag() && !insideCell.isTruffle()) {
 					System.out.print("[X]");
 				} else if (insideCell.isTruffle()) {
-					System.out.print(" ֍ ");
+					System.out.print(" Ö� ");
 				} else if (insideCell.isCovered()) {
 					System.out.print("[_]");
 				} else if (!insideCell.isCovered() && insideCell.getNumAdjTruffles() == 0) {
