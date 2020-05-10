@@ -186,7 +186,9 @@ public class TruffleHelper {
 		
 		int truffleCounter = remainingTruffles;
 		
-		if (!gameBoard[x][y].isHasFlag() && gameBoard[x][y].isTruffle()) {
+		if (!gameBoard[x][y].isCovered()) {
+			System.out.println("That area is uncovered, cannot place flag.");
+		} else if (!gameBoard[x][y].isHasFlag() && gameBoard[x][y].isTruffle()) {
 			gameBoard[x][y].setHasFlag(true);
 			truffleCounter -= 1;
 		}else if (!gameBoard[x][y].isHasFlag() && !gameBoard[x][y].isTruffle()) {
