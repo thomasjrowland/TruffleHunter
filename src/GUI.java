@@ -328,6 +328,7 @@ public class GUI extends JFrame {
 		public void mouseClicked(MouseEvent e) {
 			
 			//rechecks mouse position of click
+			
 			mx = e.getX();
 			my = e.getY();
 			
@@ -335,18 +336,10 @@ public class GUI extends JFrame {
 					
 			if (inBoxX() != -1 && inBoxY() != -1) {
 				
-				if (gameBoard[inBoxX()][inBoxY()].isTruffle() && flagger == false) {
+				if (gameBoard[inBoxX()][inBoxY()].isTruffle() && flagger == false && !gameBoard[inBoxX()][inBoxY()].isHasFlag()) {
 					defeat = true;
 					victory = false;
 					happiness = false;
-//				}
-				
-//				if (flagger == true && gameBoard[inBoxX()][inBoxY()].isCovered()) {
-//					if (gameBoard[inBoxX()][inBoxY()].isHasFlag() == false) {
-//						gameBoard[inBoxX()][inBoxY()].setHasFlag(true);
-//					} else {
-//						gameBoard[inBoxX()][inBoxY()].setHasFlag(false);
-//					}
 				} else if (flagger == false && gameBoard[inBoxX()][inBoxY()].isHasFlag() == false) {
 					TruffleHelper.uncoverOneSquare(gameBoard, inBoxX(), inBoxY(), remainingTruffles, startingCols);	
 				} else if (flagger == true) {
@@ -355,10 +348,12 @@ public class GUI extends JFrame {
 			}
 
 			//determines if the mouse is inside the smiley using the method
+			
 			if (inSmiley() == true) {
 				resetAll();
 			}
-			//determines if the mouse is inside the flag toggle using the method			
+			//determines if the mouse is inside the flag toggle using the method	
+			
 			if (inFlagger() == true) {
 				if (flagger == true) {
 					flagger = false;
@@ -386,6 +381,7 @@ public class GUI extends JFrame {
 	}
 	
 	//determines if you win the game or lose, checked by main method
+	
 	public void checkVictoryStatus() {
 		
 		if (defeat == false) {
@@ -400,8 +396,6 @@ public class GUI extends JFrame {
 				}
 			}
 		}
-		
-		
 		
 		if (totalBoxesRevealed() >= 144 - startingNumTruffles && victory == false) {
 			victory = true;
@@ -427,7 +421,9 @@ public class GUI extends JFrame {
 	//resets all victory conditions and creates a new randomized gameboard
 	public void resetAll() {
 		
-		resetter = true;//pauses main method checking victory status
+		//pauses main method checking victory status
+		
+		resetter = true;
 		
 		vicMes = "Nothing Yet!";
 		
@@ -443,7 +439,9 @@ public class GUI extends JFrame {
 		
 		gameBoard =  TruffleHelper.gameBoardBuilder(startingRows, startingCols, startingNumTruffles);
 		
-		resetter = false;//allows main method to resume checking victory status
+		//allows main method to resume checking victory status
+		
+		resetter = false;
 			
 	}
 	
@@ -496,7 +494,6 @@ public class GUI extends JFrame {
 				}
 			}
 		}
-		
 		return -1;
 	}
 }
