@@ -229,6 +229,7 @@ public class GUI extends JFrame {
 					//draws a flag(pig) in the box the mouse is within
 					if (gameBoard[i][j].isHasFlag()) {
 						
+						gameBoard[i][j].setCovered(true);
 						g.drawImage(imgPig, i * 80, j * 80 + 80, 80, 80, this);
 					}
 				}
@@ -338,16 +339,18 @@ public class GUI extends JFrame {
 					defeat = true;
 					victory = false;
 					happiness = false;
-				}
+//				}
 				
-				if (flagger == true && gameBoard[inBoxX()][inBoxY()].isCovered()) {
-					if (gameBoard[inBoxX()][inBoxY()].isHasFlag() == false) {
-						gameBoard[inBoxX()][inBoxY()].setHasFlag(true);
-					} else {
-						gameBoard[inBoxX()][inBoxY()].setHasFlag(false);
-					}
+//				if (flagger == true && gameBoard[inBoxX()][inBoxY()].isCovered()) {
+//					if (gameBoard[inBoxX()][inBoxY()].isHasFlag() == false) {
+//						gameBoard[inBoxX()][inBoxY()].setHasFlag(true);
+//					} else {
+//						gameBoard[inBoxX()][inBoxY()].setHasFlag(false);
+//					}
 				} else if (flagger == false && gameBoard[inBoxX()][inBoxY()].isHasFlag() == false) {
 					TruffleHelper.uncoverOneSquare(gameBoard, inBoxX(), inBoxY(), remainingTruffles, startingCols);	
+				} else if (flagger == true) {
+					TruffleHelper.setFlag(gameBoard, inBoxX(), inBoxY(), remainingTruffles);
 				}
 			}
 
