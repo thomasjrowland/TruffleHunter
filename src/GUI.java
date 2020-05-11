@@ -6,12 +6,13 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.net.URL;
 
 public class GUI extends JFrame {
 	
 	public final int startingRows = 9;
 	public final int startingCols = 16;
-	public final int startingNumTruffles = 10;
+	public final int startingNumTruffles = 25;
     
     public Cell[][] gameBoard =  TruffleHelper.gameBoardBuilder(startingRows, startingCols, startingNumTruffles);
 	
@@ -119,18 +120,75 @@ public class GUI extends JFrame {
 		
 		public void paintComponent(Graphics g) {
 			
+			ImageIcon iconCovered = null;
+			String imgCoveredFile = "covered.png";
+			URL imgURL = getClass().getClassLoader().getResource(imgCoveredFile);
+			if (imgURL != null) {
+			   iconCovered = new ImageIcon(imgURL);
+			} else {
+			   System.err.println("Couldn't find file: " + imgCoveredFile);
+			}
+		    final Image imgCovered = iconCovered.getImage();
+		    
+		    ImageIcon iconZero = null;
+			String imgZeroFile = "0.png";
+			URL imgURL1 = getClass().getClassLoader().getResource(imgZeroFile);
+			if (imgURL1 != null) {
+			   iconZero = new ImageIcon(imgURL1);
+			} else {
+			   System.err.println("Couldn't find file: " + imgCoveredFile);
+			}
+		    final Image imgZero = iconZero.getImage();
+		    
+		    ImageIcon iconTruffle = null;
+			String imgTruffleFile = "truffle.png";
+			URL imgURL2 = getClass().getClassLoader().getResource(imgTruffleFile);
+			if (imgURL2 != null) {
+			   iconTruffle = new ImageIcon(imgURL2);
+			} else {
+			   System.err.println("Couldn't find file: " + imgTruffleFile);
+			}
+		    final Image imgTruffle = iconTruffle.getImage();
+		    
+		    ImageIcon iconPig = null;
+			String imgPigFile = "pig.png";
+			URL imgURL3 = getClass().getClassLoader().getResource(imgPigFile);
+			if (imgURL3 != null) {
+			   iconPig = new ImageIcon(imgURL3);
+			} else {
+			   System.err.println("Couldn't find file: " + imgPigFile);
+			}
+		    final Image imgPig = iconPig.getImage();
+		    
+		    ImageIcon iconNotPig = null;
+			String imgNotPigFile = "notapig.png";
+			URL imgURL4 = getClass().getClassLoader().getResource(imgNotPigFile);
+			if (imgURL4 != null) {
+			   iconNotPig = new ImageIcon(imgURL4);
+			} else {
+			   System.err.println("Couldn't find file: " + imgPigFile);
+			}
+		    final Image imgNotPig = iconNotPig.getImage();
+		    
+		    
+		    
+		    
+			
 			g.setColor(Color.DARK_GRAY); 
 			g.fillRect(0, 0, 1280, 800); //creates a dark grey rectangle that fills the entire window 
 						
 			//build a grid of squares on the gameboard 16x9
 			for (int i = 0; i < 16; i++) {
 				for (int j = 0; j < 9; j++) {
-					g.setColor(Color.gray);
+					//g.setColor(Color.gray);
+					g.drawImage(imgCovered, i * 80, j * 80 + 80, 80, 80, this);
 					if (gameBoard[i][j].isTruffle() && defeat == true) {   		//will display all mine locations
-						g.setColor(Color.orange);
+						//g.setColor(Color.orange);
+						g.drawImage(imgTruffle, i * 80, j * 80 + 80, 80, 80, this);
 					}
 					if (!gameBoard[i][j].isCovered()) { //(revealed[i][j] == true) {
-						g.setColor(Color.white);
+						//g.setColor(Color.white);
+						g.drawImage(imgZero, i * 80, j * 80 + 80, 80, 80, this);
 						if  (gameBoard[i][j].isTruffle()) {
 							g.setColor(Color.red);
 						}
@@ -139,7 +197,7 @@ public class GUI extends JFrame {
 					if (mx >= spacing+i*80 && mx < spacing +i*80+80-2*spacing && my >= spacing+j*80+80+26 && my < spacing+j*80+26+80+80-2*spacing) { //should change column color to red while mouse over
 						g.setColor(Color.lightGray);
 					}
-					g.fillRect(spacing+i*80, spacing+j*80+80, 80-2*spacing, 80-2*spacing);
+					//g.fillRect(spacing+i*80, spacing+j*80+80, 80-2*spacing, 80-2*spacing);
 					if (!gameBoard[i][j].isCovered()) {
 						g.setColor(Color.black);
 						if  (!gameBoard[i][j].isTruffle() && gameBoard[i][j].getNumAdjTruffles() != 0) {
@@ -175,11 +233,12 @@ public class GUI extends JFrame {
 					//flag setter
 					if (gameBoard[i][j].isHasFlag()) {
 						
-						g.setColor(Color.black);
-						g.fillRect(i*80 + 32, j*80+80 + 15, 5, 40);
-						g.fillRect(i*80 + 20, j*80+80 + 50, 30, 10);
-						g.setColor(Color.red);
-						g.fillRect(i*80 + 16, j*80+80 + 15, 20, 15);
+						g.drawImage(imgPig, i * 80, j * 80 + 80, 80, 80, this);
+//						g.setColor(Color.black);
+//						g.fillRect(i*80 + 32, j*80+80 + 15, 5, 40);
+//						g.fillRect(i*80 + 20, j*80+80 + 50, 30, 10);
+//						g.setColor(Color.red);
+//						g.fillRect(i*80 + 16, j*80+80 + 15, 20, 15);
 						
 					}
 					
@@ -244,21 +303,24 @@ public class GUI extends JFrame {
 			}
 			
 			//flagger button
-			g.setColor(Color.black);
-			g.fillRect(flaggerX + 32, flaggerY + 15, 5, 40);
-			g.fillRect(flaggerX + 20, flaggerY + 50, 30, 10);
-			g.setColor(Color.red);
-			g.fillRect(flaggerX + 16, flaggerY + 15, 20, 15);
+//			g.setColor(Color.black);
+//			g.fillRect(flaggerX + 32, flaggerY + 15, 5, 40);
+//			g.fillRect(flaggerX + 20, flaggerY + 50, 30, 10);
+//			g.setColor(Color.red);
+//			g.fillRect(flaggerX + 16, flaggerY + 15, 20, 15);
+			
 			
 			if (flagger == true) {
-				g.setColor(Color.green);
+				//g.setColor(Color.green);
+				g.drawImage(imgPig, flaggerX, flaggerY, 70, 70, this);
 			} else {
-				g.setColor(Color.red);
+				//g.setColor(Color.red);
+				g.drawImage(imgNotPig, flaggerX, flaggerY, 70, 70, this);
 			}
 			
-			g.drawOval(flaggerX, flaggerY, 70, 70);
-			g.drawOval(flaggerX+1, flaggerY+1, 68, 68);
-			g.drawOval(flaggerX+2, flaggerY+2, 66, 66);
+//			g.drawOval(flaggerX, flaggerY, 66, 66);
+//			g.drawOval(flaggerX+1, flaggerY+1, 64, 64);
+//			g.drawOval(flaggerX+2, flaggerY+2, 62, 62);
 			
 		}
 		
